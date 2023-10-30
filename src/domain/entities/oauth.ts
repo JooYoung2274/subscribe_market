@@ -22,8 +22,8 @@ export class Oauth {
   @Column('varchar', { name: 'photo' })
   photo: string;
 
-  @Column('boolean', { name: 'isRegistered' })
-  isRegistered: boolean;
+  // @Column('boolean', { name: 'isRegistered' })
+  // isRegistered: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
