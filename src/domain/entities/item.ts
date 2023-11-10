@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { SubscribeList } from './subscribeList';
-import { Bucket } from './Bucket';
+import { Bucket } from './bucket';
 import { Categories } from './category';
 
 @Entity('item')

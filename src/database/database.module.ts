@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Bucket } from 'src/domain/entities/Bucket';
+import { Bucket } from 'src/domain/entities/bucket';
 import { Alarm } from 'src/domain/entities/alarm';
 import { Categories } from 'src/domain/entities/category';
 import { Items } from 'src/domain/entities/item';

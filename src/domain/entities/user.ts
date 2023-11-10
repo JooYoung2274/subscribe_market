@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { Oauth } from './oauth';
 import { SubscribeList } from './subscribeList';
-import { Bucket } from './Bucket';
+import { Bucket } from './bucket';
 
 @Entity('users')
 export class Users {
