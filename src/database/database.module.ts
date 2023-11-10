@@ -14,7 +14,7 @@ const databaseModule = TypeOrmModule.forRootAsync({
   useFactory: () => {
     return {
       type: 'postgres',
-      host: '127.0.0.1',
+      host: process.env.DB_HOST_POSTGRES,
       port: 5432,
       username: process.env.DB_USERNAME_POSTGRES,
       password: process.env.DB_PASSWORD_POSTGRES,
