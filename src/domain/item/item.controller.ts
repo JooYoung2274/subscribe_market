@@ -8,9 +8,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ItemService } from './item.service';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
+@ApiTags('상품 관련 API')
 @Controller('item')
 export class ItemController {
   constructor(private itemService: ItemService) {}

@@ -11,14 +11,14 @@ import { Users } from 'src/domain/entities/user';
 
 const databaseModule = TypeOrmModule.forRootAsync({
   inject: [ConfigService],
-  useFactory: async (configService: ConfigService) => {
+  useFactory: () => {
     return {
-      type: 'mysql',
+      type: 'postgres',
       host: '127.0.0.1',
-      port: 3306,
-      username: configService.get('DB_USERNAME'),
-      password: configService.get('DB_PASSWORD'),
-      database: configService.get('DB_DATABASE'),
+      port: 5432,
+      username: process.env.DB_USERNAME_POSTGRES,
+      password: process.env.DB_PASSWORD_POSTGRES,
+      database: process.env.DB_DATABASE_POSTGRES,
       entities: [Oauth, Users, Bucket, Categories, Items, Alarm, SubscribeList],
       autoLoadEntities: true,
       charset: 'utf8mb4',

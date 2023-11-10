@@ -15,7 +15,7 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UpdateSubscribeDto } from './dto/UpdateSubscribeDto';
 import { User } from 'src/common/decorator/user.decorator';
 
-@ApiTags('Subscribe')
+@ApiTags('구독 관련 API')
 @Controller('subscribe')
 export class SubscribeController {
   constructor(private subscribeService: SubscribeService) {}

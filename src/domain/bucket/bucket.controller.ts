@@ -10,9 +10,10 @@ import {
 } from '@nestjs/common';
 import { BucketService } from './bucket.service';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/common/decorator/user.decorator';
 
+@ApiTags('장바구니 관련 API')
 @Controller('bucket')
 export class BucketController {
   constructor(private bucketService: BucketService) {}
