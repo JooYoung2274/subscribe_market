@@ -6,10 +6,16 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
+    "target": "es2020",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "@*": ["src/*"],
+      "entities/*": ["src/domains/entities/*"],
+      "@auth/*": ["src/domains/auth/*"],
+      "@user/*": ["src/domains/user/*"]
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
