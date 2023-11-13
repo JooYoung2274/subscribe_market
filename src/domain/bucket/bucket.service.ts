@@ -3,23 +3,19 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Bucket } from '../entities/bucket';
 import { Repository } from 'typeorm';
 import { Items } from '../entities/item';
+import { CreateBucketDto } from './dto/CreateBucketDto';
+import { BucketRepository } from './bucket.repository';
 
 @Injectable()
 export class BucketService {
   constructor(
-    @InjectRepository(Bucket) private bucketRepository: Repository<Bucket>,
+    private readonly bucketRepository: BucketRepository,
     @InjectRepository(Items) private itemRepository: Repository<Items>,
   ) {}
 
-  async createBucket(body, user) {
-    const { ItemId, cycle } = body;
-    const { id } = user;
-
-    const newBucket = this.bucketRepository.create();
-    newBucket.UserId = id;
-    newBucket.cycle = cycle;
-    newBucket.ItemId = ItemId;
-    return await this.bucketRepository.save(newBucket);
+  async createBucket(body: CreateBucketDto, user): Promise<Bucket> {
+    const result = await this.bucketRepository.createBucket(body, user);
+    return result;
   }
 
   async getBucket(user) {
@@ -32,33 +28,27 @@ export class BucketService {
       .getRawMany();
   }
 
-  async deleteBucket(param, user) {
-    const { BucketId } = param;
-    const { id } = user;
-
-    return await this.bucketRepository.delete({
-      id: Number(BucketId),
-      UserId: id,
-    });
+  async deleteBucket(param, user): Promise<void> {
+    await this.bucketRepository.deleteBucket(param, user);
+    return;
   }
 
-  async updateBucket(body, param, user) {
+  async updateBucket(body, param, user): Promise<Bucket> {
     const { cycle } = body;
     const { BucketId } = param;
     const { id } = user;
 
-    const isSubscribe = await this.bucketRepository.findOne({
-      where: {
-        id: Number(BucketId),
-        UserId: id,
-      },
-    });
+    const isBucket = await this.bucketRepository.findOneById(BucketId);
 
-    if (isSubscribe.UserId !== id) {
-      throw new BadRequestException();
+    if (!isBucket) {
+      throw new BadRequestException('잘못된 요청');
     }
 
-    isSubscribe.cycle = cycle;
-    return await this.bucketRepository.save(isSubscribe);
+    if (isBucket.UserId !== id) {
+      throw new BadRequestException('권한이 없음');
+    }
+
+    isBucket.cycle = cycle;
+    return await this.bucketRepository.save(isBucket);
   }
 }

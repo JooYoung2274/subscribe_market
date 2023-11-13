@@ -12,6 +12,7 @@ import { BucketService } from './bucket.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/common/decorator/user.decorator';
+import { CreateBucketDto } from './dto/CreateBucketDto';
 
 @ApiTags('장바구니 관련 API')
 @Controller('bucket')
@@ -22,7 +23,7 @@ export class BucketController {
   @ApiBearerAuth('access-token')
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  async createBucket(@Body() body, @User() user) {
+  async createBucket(@Body() body: CreateBucketDto, @User() user) {
     return await this.bucketService.createBucket(body, user);
   }
 
