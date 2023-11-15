@@ -1,0 +1,10 @@
+version: '3'
+services:
+  nestjs-app:
+    build:
+      context: . # 현재 디렉토리를 빌드 컨텍스트로 사용합니다.
+      dockerfile: Dockerfile # 사용할 Dockerfile을 지정합니다.
+    ports:
+      - '3000:3000' # 컨테이너의 포트를 호스트 머신의 포트에 매핑합니다.
+    volumes:
+      - .:/app # 로컬 소스 코드를 컨테이너 내부로 마운트하여 개발 중에 실시간으로 변경을 반영합니다.

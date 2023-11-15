@@ -23,7 +23,7 @@ export class ItemController {
 
   @ApiOperation({ summary: '특정 카테고리 상품 리스트 불러오기' })
   @ApiBearerAuth('access-token')
-  @ApiParam({ name: 'CategoryId', description: '카테고리 id', example: 1 })
+  @ApiParam({ name: 'categoryId', description: '카테고리 id', example: 1 })
   @Get(':categoryId')
   @UseGuards(AuthGuard('jwt'))
   async getItemListByCategory(@Param('categoryId') categoryId: number) {
