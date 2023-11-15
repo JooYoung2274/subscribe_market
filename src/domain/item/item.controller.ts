@@ -8,7 +8,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ItemService } from './item.service';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('상품 관련 API')
@@ -18,10 +23,11 @@ export class ItemController {
 
   @ApiOperation({ summary: '특정 카테고리 상품 리스트 불러오기' })
   @ApiBearerAuth('access-token')
-  @Get(':CategoryId')
+  @ApiParam({ name: 'CategoryId', description: '카테고리 id', example: 1 })
+  @Get(':categoryId')
   @UseGuards(AuthGuard('jwt'))
-  async getItemListByCategory(@Param() param) {
-    return await this.itemService.getItemListByCategory(param);
+  async getItemListByCategory(@Param('categoryId') categoryId: number) {
+    return await this.itemService.getItemListByCategory(categoryId);
   }
 
   @ApiOperation({
@@ -33,11 +39,15 @@ export class ItemController {
     return await this.itemService.addItem(body);
   }
 
-  @Delete(':ItemId')
-  async deleteItem(@Param() param) {
-    return await this.itemService.deleteItem(param);
+  @ApiOperation({ summary: '상품 삭제하기' })
+  @ApiBearerAuth('access-token')
+  @ApiParam({ name: 'ItemId', description: '상품 id', example: 1 })
+  @Delete(':itemId')
+  async deleteItem(@Param('itemId') itemId: number) {
+    return await this.itemService.deleteItem(itemId);
   }
 
+  @ApiOperation({ summary: '카테고리 리스트 불러오기' })
   @Get('category/list')
   async getCategoryList() {
     return await this.itemService.getCategoryList();

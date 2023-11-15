@@ -11,7 +11,12 @@ import {
 import { SubscribeService } from './subscribe.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateSubscribeDto } from './dto/CreateSubscribeDto';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UpdateSubscribeDto } from './dto/UpdateSubscribeDto';
 import { User } from 'src/common/decorator/user.decorator';
 
@@ -30,22 +35,27 @@ export class SubscribeController {
 
   @ApiOperation({ summary: '구독 주기 변경' })
   @ApiBearerAuth('access-token')
-  @Put(':SubscribeId')
+  @ApiParam({ name: 'subscribeId', description: '구독 id', example: 1 })
+  @Put(':subscribeId')
   @UseGuards(AuthGuard('jwt'))
   async updateSubscribe(
     @Body() body: UpdateSubscribeDto,
-    @Param() param,
+    @Param('subscribeId') subscribeId: number,
     @User() user,
   ) {
-    return await this.subscribeService.updateSubscribe({ body, param, user });
+    return await this.subscribeService.updateSubscribe(body, subscribeId, user);
   }
 
   @ApiOperation({ summary: '구독 리스트 삭제' })
   @ApiBearerAuth('access-token')
-  @Delete(':SubscribeId')
+  @ApiParam({ name: 'subscribeId', description: '구독 id', example: 1 })
+  @Delete(':subscribeId')
   @UseGuards(AuthGuard('jwt'))
-  async deleteSubscribe(@Param() param, @User() user) {
-    return await this.subscribeService.deleteSubscribe({ param, user });
+  async deleteSubscribe(
+    @Param('subscribeId') subscribeId: number,
+    @User() user,
+  ) {
+    return await this.subscribeService.deleteSubscribe(subscribeId, user);
   }
 
   @ApiOperation({ summary: '구독 리스트 불러오기' })

@@ -21,14 +21,12 @@ export class BucketRepository {
     return await this.bucketRepository.save(newBucket);
   }
 
-  async deleteBucket(param, user) {
-    const { BucketId } = param;
-    const { id } = user;
-
-    return await this.bucketRepository.delete({
-      id: Number(BucketId),
-      UserId: id,
+  async deleteBucket(id: number, user) {
+    await this.bucketRepository.delete({
+      id: id,
+      UserId: user.id,
     });
+    return;
   }
 
   async findOneById(id: number) {

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Items } from '../entities/item';
 import { CreateBucketDto } from './dto/CreateBucketDto';
 import { BucketRepository } from './bucket.repository';
+import { UpdateBucketDto } from './dto/UpdateBucketDto';
 
 @Injectable()
 export class BucketService {
@@ -28,24 +29,22 @@ export class BucketService {
       .getRawMany();
   }
 
-  async deleteBucket(param, user): Promise<void> {
-    await this.bucketRepository.deleteBucket(param, user);
+  async deleteBucket(id: number, user): Promise<void> {
+    await this.bucketRepository.deleteBucket(id, user);
     return;
   }
 
-  async updateBucket(body, param, user): Promise<Bucket> {
+  async updateBucket(body: UpdateBucketDto, id: number, user): Promise<Bucket> {
     const { cycle } = body;
-    const { BucketId } = param;
-    const { id } = user;
 
-    const isBucket = await this.bucketRepository.findOneById(BucketId);
+    const isBucket = await this.bucketRepository.findOneById(id);
 
     if (!isBucket) {
-      throw new BadRequestException('잘못된 요청');
+      throw new BadRequestException('삭제된 장바구니 입니다.');
     }
 
-    if (isBucket.UserId !== id) {
-      throw new BadRequestException('권한이 없음');
+    if (isBucket.UserId !== user.id) {
+      throw new BadRequestException('권한이 없습니다.');
     }
 
     isBucket.cycle = cycle;

@@ -3,11 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Items } from '../entities/item';
+import { Categories } from '../entities/category';
 
 @Injectable()
 export class ItemRepository {
   constructor(
     @InjectRepository(Items) private itemRepository: Repository<Items>,
+    @InjectRepository(Categories)
+    private categoryRepository: Repository<Categories>,
   ) {}
 
   async createItem(body) {
@@ -21,5 +24,15 @@ export class ItemRepository {
 
   async deleteBucket(id: number) {
     return await this.itemRepository.delete({ id });
+  }
+
+  async findItemListByCategory(categoryId: number) {
+    return await this.itemRepository.find({
+      where: { CategoryId: categoryId },
+    });
+  }
+
+  async findCategoryList() {
+    return await this.categoryRepository.find();
   }
 }

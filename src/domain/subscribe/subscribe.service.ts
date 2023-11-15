@@ -6,12 +6,6 @@ import { UpdateSubscribeDto } from './dto/UpdateSubscribeDto';
 import { Temporal } from '@js-temporal/polyfill';
 import { SubscribeRepository } from './subscribe.repository';
 
-export interface IUpdateSubscribe {
-  body?: UpdateSubscribeDto;
-  param: { SubscribeId: string };
-  user: { id: number };
-}
-
 @Injectable()
 export class SubscribeService {
   constructor(private subscribeRepository: SubscribeRepository) {}
@@ -40,10 +34,9 @@ export class SubscribeService {
     }
   }
 
-  async updateSubscribe({ body, param, user }: IUpdateSubscribe) {
+  async updateSubscribe(body: UpdateSubscribeDto, subscribeId: number, user) {
     try {
       const { cycle } = body;
-      const subscribeId = Number(param.SubscribeId);
       const oauthId = user.id;
 
       let now = Temporal.Now.plainDateISO();
@@ -63,9 +56,8 @@ export class SubscribeService {
     }
   }
 
-  async deleteSubscribe({ param, user }: IUpdateSubscribe) {
+  async deleteSubscribe(subscribeId: number, user) {
     try {
-      const subscribeId = Number(param.SubscribeId);
       const oauthId = user.id;
 
       const isSubscribe =
