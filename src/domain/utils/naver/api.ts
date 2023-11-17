@@ -1,13 +1,20 @@
 import axios from 'axios';
+import OpenAI from 'openai';
 
-// 하루에 한 번
-// 오늘 날짜에 맞는 데이터가 Alarm entity 에 있는지 확인
-// 없으면 끝
-// 있으면 해당 컬럼의 SubscribeListId -> ItemId -> name 을 찾아서
-// naver api 로 데이터 긁어오고
-// 긁어온 데이터 Items 테이블에 업데이트 시킴.
+const openAI = new OpenAI({
+  apiKey: `${process.env.OPENAI_API_KEY}`,
+});
 
-// naver api
+export async function openAi(prompt: string) {
+  const completion = await openAI.chat.completions.create({
+    model: 'gpt-3.5-turbo',
+    messages: [{ role: 'assistant', content: prompt }],
+    max_tokens: 50,
+    temperature: 0,
+  });
+
+  console.log(completion.choices[0].message);
+}
 
 export async function naverApi(query: string) {
   const config = {
@@ -19,11 +26,9 @@ export async function naverApi(query: string) {
     },
   };
 
-  axios(config)
+  return axios(config)
     .then(function (response) {
-      const result = JSON.stringify(response.data);
-      console.log(result);
-      return result;
+      return JSON.stringify(response.data);
     })
     .catch(function (error) {
       console.log(error);
